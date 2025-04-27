@@ -2,288 +2,316 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio (Ayan Dutta)</title>
 
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-  <!-- AOS Animation CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
   <style>
-    /* Basic Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      transition: background 0.5s, color 0.5s;
-      background: var(--background-color);
-      color: var(--text-color);
-      position: relative;
-      overflow-x: hidden;
-    }
-
+    /* CSS Variables */
     :root {
       --background-color: #ffffff;
       --text-color: #000000;
-      --card-background: #f5f5f5;
+      --accent-color: #007bff;
+      --card-background: #f9f9f9;
+      --nav-background: #ffffff;
     }
 
-    body.dark-mode {
+    body.dark-theme {
       --background-color: #121212;
-      --text-color: #ffffff;
-      --card-background: #1e1e1e;
+      --text-color: #e0e0e0;
+      --accent-color: #66b2ff;
+      --card-background: #1f1f1f;
+      --nav-background: #1c1c1c;
     }
 
-    /* Stars Effect */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      background: transparent;
-      overflow: hidden;
-      display: none;
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: background-color 0.5s, color 0.5s;
     }
 
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 2s infinite alternate;
+    section {
+      padding: 50px 20px;
+      text-align: center;
+      animation: fadeIn 1s ease-in;
     }
 
-    @keyframes twinkle {
-      from {opacity: 0.3;}
-      to {opacity: 1;}
-    }
-
-    body.dark-mode .stars {
-      display: block;
-    }
-
-    /* Navbar */
     nav {
-      background: var(--card-background);
+      background: var(--nav-background);
       padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .links-container a {
+      margin: 0 10px;
       text-decoration: none;
       color: var(--text-color);
-      margin: 0 10px;
       font-weight: 500;
+      transition: color 0.3s;
     }
 
-    /* Fancy Toggle Button (with Sun and Moon) */
-    .toggle-switch {
+    .links-container a:hover {
+      color: var(--accent-color);
+    }
+
+    /* Toggle Switch */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+    }
+
+    .switch {
       position: relative;
-      width: 60px;
-      height: 30px;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
     }
 
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { display: none; }
 
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       background-color: #ccc;
+      border-radius: 25px;
+      top: 0; left: 0; right: 0; bottom: 0;
       transition: 0.4s;
-      border-radius: 30px;
     }
 
     .slider:before {
       position: absolute;
-      content: '\f185'; /* Sun icon */
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      height: 22px;
-      width: 22px;
-      left: 4px;
-      bottom: 4px;
+      content: "";
+      height: 19px;
+      width: 19px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
-      color: #f39c12;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.4s;
       border-radius: 50%;
+      transition: 0.4s;
     }
 
     input:checked + .slider {
-      background-color: #2196F3;
+      background-color: var(--accent-color);
     }
 
     input:checked + .slider:before {
-      transform: translateX(28px);
-      content: '\f186'; /* Moon icon */
-      color: #f1c40f;
+      transform: translateX(24px);
     }
 
     /* Sections */
-    section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .profile-photo {
+    .home-content img {
       width: 150px;
+      height: 150px;
+      object-fit: cover;
       border-radius: 50%;
       margin-bottom: 20px;
+      border: 3px solid var(--accent-color);
     }
 
-    /* Skill bars */
-    .skill-container {
-      display: grid;
-      gap: 15px;
+    h1, h2, h3 {
+      margin-bottom: 10px;
     }
 
-    .skill {
+    p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .skill-container, .portfolio-container, .service-container, .education-item, .experience-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .skill, .service, .portfolio-item, .education-item, .experience-item {
       background: var(--card-background);
-      padding: 10px;
       border-radius: 10px;
-      text-align: left;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .skill:hover, .service:hover, .portfolio-item:hover, .education-item:hover, .experience-item:hover {
+      transform: translateY(-5px);
     }
 
     .bar {
-      background: #ccc;
-      height: 8px;
-      margin-top: 5px;
+      width: 100%;
+      background: #ddd;
       border-radius: 10px;
       overflow: hidden;
+      margin-top: 10px;
     }
 
     .progress {
-      height: 100%;
-      background: #007bff;
+      height: 10px;
       width: 70%;
+      background: var(--accent-color);
+      border-radius: 10px;
+      animation: grow 2s ease forwards;
+    }
+
+    @keyframes grow {
+      from { width: 0; }
+      to { width: 70%; }
+    }
+
+    /* Social Icons */
+    .social-icons {
+      margin-top: 20px;
+    }
+
+    .social-icon {
+      margin: 0 10px;
+      color: var(--text-color);
+      font-size: 24px;
+      transition: color 0.3s;
+    }
+
+    .social-icon:hover {
+      color: var(--accent-color);
     }
 
     /* Contact Form */
+    form {
+      max-width: 500px;
+      margin: auto;
+    }
+
     .form-group {
       margin-bottom: 15px;
       text-align: left;
     }
 
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
     input, textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      border: 1px solid #aaa;
       border-radius: 5px;
-      border: 1px solid #ccc;
       background: var(--card-background);
       color: var(--text-color);
     }
 
     button {
+      background: var(--accent-color);
+      color: white;
       padding: 10px 20px;
       border: none;
-      background: #007bff;
-      color: #fff;
       border-radius: 5px;
       cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0056b3;
     }
 
     footer {
-      background: var(--card-background);
-      padding: 20px;
-      font-size: 14px;
       text-align: center;
+      padding: 20px;
+      background: var(--nav-background);
+      margin-top: 40px;
+      font-size: 14px;
     }
 
-    /* Mobile Animations */
-    @media screen and (max-width: 768px) {
-      .home-content, .about-me-content, .education-item, .skill, .experience-item, .service, .portfolio-item, form {
-        animation: slideFade 1s ease forwards;
-      }
+    /* Fade In Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
     }
-
-    @keyframes slideFade {
-      0% {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
   </style>
+
 </head>
+
 <body>
 
-  <!-- Stars Background -->
-  <div class="stars" id="stars-container"></div>
+  <section id="navbar">
+    <nav>
+      <div class="links-container">
+        <a href="#home">Home</a> 
+        <a href="#about">About</a> 
+        <a href="#education">Education</a>
+        <a href="#skill">Skill</a>
+        <a href="#experience">Experience</a>
+        <a href="#service">Service</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="theme-toggle">
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle-checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </nav>
+  </section>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="links-container">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#education">Education</a>
-      <a href="#skill">Skill</a>
-      <a href="#experience">Experience</a>
-      <a href="#service">Service</a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#contact">Contact</a>
-    </div>
-
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider"></span>
-    </label>
-
-  </nav>
-
-  <!-- Sections -->
-  <section id="home" data-aos="fade-up">
+  <section id="home">
     <div class="home-content">
       <img src="me.jpg" alt="Ayan Dutta" class="profile-photo">
       <h1>I am Ayan Dutta</h1>
-      <p>Passionate Web Developer</p>
+      <p class="profession">Passionate Web Developer</p>
+      <div class="software">Creates, designs, and maintains programs and applications for various purposes.</div>
+      <div class="coding">Specializes in coding websites for functionality, usability, and user experience.</div>
+    </div>
+    <div class="social-icons">
+      <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.instagram.com/ayandutta3383" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
     </div>
   </section>
 
-  <section id="about" data-aos="fade-up" data-aos-delay="100">
+  <section id="about">
     <div class="about-me-content">
       <h2>About Me</h2>
-      <p>I love coding, exploring new technologies, and solving problems creatively!</p>
+      <p>Coding isn't just a skill for me; it's my ultimate passion. It fuels my drive to explore cutting-edge technologies, craft innovative solutions, and push the boundaries.</p>
+      <p>As a fresher, I have undertaken personal projects showcasing my creativity, dedication, and innovation.</p>
+      <p>I'm skilled in HTML, CSS, JavaScript, PHP, MySQL, Node.js, React, Python, and Android app development.</p>
+      <p>I love learning new things, exploring tech, nature walks, and reading!</p>
+      <p>Ready to collaborate? Let's connect!</p>
     </div>
   </section>
 
-  <section id="education" data-aos="zoom-in" data-aos-delay="200">
-    <h2>Education</h2>
-    <div class="education-item">Primary Education - Shishu Niketan (2021)</div>
-    <div class="education-item">Secondary Education - Beldanga CRGS (2022)</div>
-    <div class="education-item">Secondary Education - Vidya Niketan (2023-2024)</div>
-    <div class="education-item">Secondary Education - Sargachi RK Mission (2025-Present)</div>
+  <section id="education">
+    <h1>Education</h1>
+    <div class="education-item">
+      <h2>Shishu Niketan</h2>
+      <p>Primary Education - 2021</p>
+    </div>
+    <div class="education-item">
+      <h2>Beldanga CRGS High School</h2>
+      <p>Secondary Education - 2022</p>
+    </div>
+    <div class="education-item">
+      <h2>Vidya Niketan</h2>
+      <p>Secondary Education - 2023-2024</p>
+    </div>
+    <div class="education-item">
+      <h2>Sargachi Ramkrishna Mission High School</h2>
+      <p>Secondary Education - 2025-Present</p>
+    </div>
   </section>
 
-  <section id="skill" data-aos="fade-right" data-aos-delay="300">
-    <h2>Skills</h2>
+  <section id="skill">
+    <h1>Skills</h1>
     <div class="skill-container">
       <div class="skill">
         <h3>Web Designing</h3>
@@ -297,49 +325,74 @@
         <h3>Content Writing</h3>
         <div class="bar"><div class="progress"></div></div>
       </div>
+      <div class="skill">
+        <h3>MS Office</h3>
+        <div class="bar"><div class="progress"></div></div>
+      </div>
+      <div class="skill">
+        <h3>MS Excel</h3>
+        <div class="bar"><div class="progress"></div></div>
+      </div>
     </div>
   </section>
 
-  <section id="experience" data-aos="fade-left" data-aos-delay="400">
-    <h2>Experience</h2>
+  <section id="experience">
+    <h1>Experience</h1>
     <div class="experience-item">
-      <p>Fresher, eager to learn and contribute!</p>
+      <h3>Fresher</h3>
+      <p>No professional experience yet. But eager to learn and contribute!</p>
     </div>
   </section>
 
-  <section id="service" data-aos="zoom-in" data-aos-delay="500">
-    <h2>Service</h2>
-    <div class="service">
-      <p>Web Design & Development for modern businesses.</p>
+  <section id="service">
+    <h1>Services</h1>
+    <div class="service-container">
+      <div class="service">
+        <h3>Web Design & Development</h3>
+        <p>Creating stunning websites tailored to your needs using latest technologies.</p>
+      </div>
     </div>
   </section>
 
-  <section id="portfolio" data-aos="fade-up" data-aos-delay="600">
-    <h2>Portfolio</h2>
+  <section id="portfolio">
+    <h1>Portfolio</h1>
     <div class="portfolio-container">
-      <div class="portfolio-item">Project 1</div>
-      <div class="portfolio-item">Project 2</div>
-      <div class="portfolio-item">Project 3</div>
+      <div class="portfolio-item">
+        <img src="" alt="">
+        <h3>Project 1</h3>
+        <p>Description of Project 1</p>
+      </div>
+      <div class="portfolio-item">
+        <img src="" alt="">
+        <h3>Project 2</h3>
+        <p>Description of Project 2</p>
+      </div>
+      <div class="portfolio-item">
+        <img src="" alt="">
+        <h3>Project 3</h3>
+        <p>Description of Project 3</p>
+      </div>
     </div>
   </section>
 
-  <section id="contact" data-aos="fade-up" data-aos-delay="700">
-    <h2>Contact</h2>
-    <form>
+  <section id="contact">
+    <h1>Contact</h1>
+    <form method="post" action="submit_form.php">
       <div class="form-group">
-        <label>Name:</label>
-        <input type="text" required>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
       </div>
       <div class="form-group">
-        <label>Email:</label>
-        <input type="email" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
       </div>
       <div class="form-group">
-        <label>Message:</label>
-        <textarea rows="3" required></textarea>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="2" required></textarea>
       </div>
       <button type="submit">Submit</button>
     </form>
+    <p id="thank-you" style="display: none;">Thank you for contacting us!</p>
   </section>
 
   <footer>
@@ -347,33 +400,15 @@
     <h6>&copy; 2024 NETSUCCESS. All rights reserved.</h6>
   </footer>
 
-  <!-- AOS Animation JS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
-    AOS.init({
-      once: true,
-      duration: 800,
-      offset: 120,
+    const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+    themeToggleCheckbox.addEventListener('change', () => {
+      document.body.classList.toggle('dark-theme');
     });
-
-    // Theme Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const starsContainer = document.getElementById('stars-container');
-
-    themeToggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark-mode');
-    });
-
-    // Generate Stars
-    for (let i = 0; i < 100; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-      starsContainer.appendChild(star);
-    }
   </script>
+
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
